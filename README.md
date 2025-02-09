@@ -1,4 +1,4 @@
-![alt text]([http://url/to/img.png](https://steamuserimages-a.akamaihd.net/ugc/32181900851397422/B354BE3A44E62CBA7868392856324CF4408F9E17/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false)
+https://steamuserimages-a.akamaihd.net/ugc/32181900851397422/B354BE3A44E62CBA7868392856324CF4408F9E17/
 
 FPV Drone RPG is a mod, created by Moerderhoschi for Arma 3.
 
