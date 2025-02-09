@@ -6,6 +6,6 @@ You can also use the RPG Grenades of other Units Backpacks, only thing you need 
 
 Dowload on Steam: https://steamcommunity.com/sharedfiles/filedetails/?id=3361183268
 
-CREDITS
-Armed-Assault.de Crew - For many great ArmA moments in many years
-BIS - For ArmA3
+CREDITS:
+- Armed-Assault.de Crew - For many great ArmA moments in many years
+- BIS - For ArmA3
