@@ -4,7 +4,7 @@ class CfgPatches
 	{
 		author = "Moerderhoschi";
 		name = "FPV Drone RPG";
-		url = "http://moerderhoschi.bplaced.net";
+		url = "https://steamcommunity.com/sharedfiles/filedetails/?id=3361183268";
 		units[] = {};
 		weapons[] = {};
 		requiredVersion = 1.0;
@@ -41,6 +41,6 @@ class CfgMods
 		hidePicture = "true";
 		hideName = "true";
 		actionName = "Website";
-		action = "http://moerderhoschi.bplaced.net";
+		action = "https://steamcommunity.com/sharedfiles/filedetails/?id=3361183268";
 	};
 };
