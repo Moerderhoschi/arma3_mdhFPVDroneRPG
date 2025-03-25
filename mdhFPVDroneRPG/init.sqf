@@ -114,8 +114,8 @@ if (missionNameSpace getVariable ["pMdhFPVDroneRPG",99] == 99) then
 						[
 							_x
 							,_text
-							,"mdhMissionEnhancements\mdhFPVDroneRPG.paa"
-							,"mdhMissionEnhancements\mdhFPVDroneRPG.paa"
+							,(_path+"\mdhFPVDroneRPG.paa")
+							,(_path+"\mdhFPVDroneRPG.paa")
 							,"
 								player distance _target < 5
 								&& {vehicle player == player}
