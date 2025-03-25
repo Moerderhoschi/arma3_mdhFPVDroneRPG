@@ -78,9 +78,19 @@ if (missionNameSpace getVariable ["pMdhFPVDroneRPG",99] == 99) then
 							_g = "";
 							{if (_g == "" && {_x in (compatibleMagazines "launch_RPG7_F" + compatibleMagazines "launch_RPG32_F")}) then {_g = _x}} forEach backpackItems _u;
 							_u removeItemFromBackpack _g;
-							player playActionNow "Medic";
-							sleep 6;
-	
+							if (vehicle player == player) then
+							{
+								if (stance player == "PRONE") then
+								{
+									player playActionNow "MedicOther";
+									sleep 8;
+								}
+								else
+								{
+									player playActionNow "Medic";
+									sleep 6;
+								};
+							};	
 							_ct = "B_UAV_01_F" createVehicle (player getRelPos [1,0]);
 							_ct setDir getDir player;
 							(side group player) createVehicleCrew _ct;
