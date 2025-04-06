@@ -1,5 +1,5 @@
 /////////////////////////////////////////////////////////////////////////////////////////////
-// MDH FPV DRONE RPG(by Moerderhoschi) - v2025-03-28
+// MDH FPV DRONE RPG(by Moerderhoschi) - v2025-04-05
 // github: https://github.com/Moerderhoschi/arma3_mdhFPVDroneRPG
 // steam mod version: https://steamcommunity.com/sharedfiles/filedetails/?id=3361183268
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -90,18 +90,26 @@ if (missionNameSpace getVariable ["pMdhFPVDroneRPG",99] == 99) then
 									player playActionNow "Medic";
 									sleep 6;
 								};
-							};	
+							};
+
 							_ct = "B_UAV_01_F" createVehicle (player getRelPos [1,0]);
 							_ct setDir getDir player;
 							(side group player) createVehicleCrew _ct;
-							_w = createSimpleObject ["\A3\Weapons_F_Exp\Launchers\RPG7\rocket_rpg7_item.p3d", getPos _ct];
+							//_w = createSimpleObject ["\A3\Weapons_F_Exp\Launchers\RPG7\rocket_rpg7_item.p3d", getPos _ct];
+							_w = createSimpleObject [(getText(configfile >> "CfgMagazines" >> _g >> "model")), getPos _ct];
 							_w attachTo [_ct, [0, 0.15, 0.1]];
 							_w setdir 90;
+							if (_g == "CUP_OG7_M") then
+							{
+								_w attachTo [_ct, [0, 0.30, 0.1]];
+								_w setdir 180;
+							};
+							_g = getText(configfile >> "CfgMagazines" >> _g >> "ammo");
 							player connectTerminalToUAV _ct;
 							_w lockInventory true;
-							0 = [_ct, _w] spawn
+							0 = [_ct, _w, _g] spawn
 							{
-								params["_ct","_w"];
+								params["_ct","_w","_g"];
 								_a = [];
 								waitUntil {sleep 0.2;_a pushBack (speed _ct);if(count _a > 5)then{_a deleteAt 0}; !alive _ct};
 								if (alive _w) then
@@ -109,7 +117,8 @@ if (missionNameSpace getVariable ["pMdhFPVDroneRPG",99] == 99) then
 									deleteVehicle _w;
 									if ((selectMax _a) > 20) then
 									{
-										_t = "R_PG32V_F";
+										//_t = "R_PG32V_F";
+										_t = _g;
 										_b = _t createVehicle getPos _ct;
 										_b attachTo [_ct, [0, 0, 0.5]];
 										_b setdir 270;
