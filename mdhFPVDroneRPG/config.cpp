@@ -24,7 +24,7 @@ class CfgFunctions
 		{
 			class mdhFPVDroneRPG
 			{
-				file = "mdhFPVDroneRPG\init.sqf";
+				file = "mdhFPVDroneRPG\mdhFPVDroneRPG.sqf";
 				postInit = 1;
 			};
 		};
