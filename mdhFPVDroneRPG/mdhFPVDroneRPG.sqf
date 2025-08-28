@@ -1,5 +1,5 @@
 /////////////////////////////////////////////////////////////////////////////////////////////
-// MDH FPV DRONE RPG(by Moerderhoschi) - v2025-08-11
+// MDH FPV DRONE RPG(by Moerderhoschi) - v2025-08-28
 // github: https://github.com/Moerderhoschi/arma3_mdhFPVDroneRPG
 // steam mod version: https://steamcommunity.com/sharedfiles/filedetails/?id=3361183268
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -36,18 +36,41 @@ if (missionNameSpace getVariable ["pMdhFPVDroneRPG",99] == 99) then
 		
 				if(_c) then
 				{
+					mdhFPVDroneRPGModBriefingFnc =
+					{
+						if ((_this#0) == "mdhFPVDroneRPGModAssembleTime") then
+						{
+							profileNameSpace setVariable[_this#0,_this#1];
+						}
+						else
+						{
+							_terminal = "B_UavTerminal";
+							if (side group player == civilian) then {_terminal = "C_UavTerminal"};
+							if (side group player == east) then {_terminal = "O_UavTerminal"};
+							if (side group player == independent) then {_terminal = "I_UavTerminal"};
+							player linkItem _terminal;
+						};
+						systemChat (_this#2);
+					};
+
 					player createDiaryRecord
 					[
 						"MDH Mods",
 						[
 							_t,
 							(
-							  '<br/>FPV Drone RPG is a mod, created by Moerderhoschi for Arma 3. (v2025-08-11)<br/>'
+							  '<br/>FPV Drone RPG is a mod, created by Moerderhoschi for Arma 3. (v2025-08-28)<br/>'
 							+ '<br/>'
 							+ 'You can assemble a Drone by having an <br/>'
-							+ 'Drone Terminal equipped and also a Backpack with RPGs.<br/>'
+							+ 'Drone Terminal equipped and also a Backpack with RPGs or Mines.<br/>'
 							+ 'You can also use RPGs of other Units Backpacks to assemble Drones.<br/>'
 							+ '<br/>'
+							+ 'FPV Drone RPG Modoptions: '
+							+ '<br/>Add Terminal to inventory: <font color="#33CC33"><execute expression = "[''mdhFPVDroneRPGModTerminal'',true,''FPV Drone RPG Terminal added to inventory''] call mdhFPVDroneRPGModBriefingFnc">gimme</execute></font color>'
+							+ '<br/>Assembletime: '
+							+    '<font color="#33CC33"><execute expression = "[''mdhFPVDroneRPGModAssembleTime'',1,''MDH FPV Drone assemble time activated''] call mdhFPVDroneRPGModBriefingFnc">activate</execute></font color>'
+							+ ' / <font color="#CC0000"><execute expression = "[''mdhFPVDroneRPGModAssembleTime'',0,''MDH FPV Drone assemble time deactivated''] call mdhFPVDroneRPGModBriefingFnc">deactivate</execute></font color>'							
+							+ '<br/><br/>'
 							+ 'If you have any question you can contact me at the steam workshop page.<br/>'
 							+ '<br/>'
 							+ '<img image="'+_path+'\mdhFPVDroneRPG.paa"/>'					  
@@ -78,19 +101,23 @@ if (missionNameSpace getVariable ["pMdhFPVDroneRPG",99] == 99) then
 					_u = _this #0;
 					_p = _this #3#0;
 					_satchels = _this #3#1;
+					showCommandingMenu "RscMainMenu";showCommandingMenu ""; // hideActionMenuAfterUse
 					_g = _p;
 					_u removeItem _g;
 					if (vehicle player == player) then
 					{
-						if (stance player == "PRONE") then
+						if (profileNameSpace getVariable ["mdhFPVDroneRPGModAssembleTime",1] == 1) then
 						{
-							player playActionNow "MedicOther";
-							sleep 8;
-						}
-						else
-						{
-							player playActionNow "Medic";
-							sleep 6;
+							if (stance player == "PRONE") then
+							{
+								player playActionNow "MedicOther";
+								sleep 8;
+							}
+							else
+							{
+								player playActionNow "Medic";
+								sleep 6;
+							};
 						};
 					};
 
@@ -124,6 +151,19 @@ if (missionNameSpace getVariable ["pMdhFPVDroneRPG",99] == 99) then
 					0 = [_ct, _w, _ammo, _g, _satchels] spawn
 					{
 						params["_ct","_w","_ammo","_g","_satchels"];
+						0 = [_ct] spawn
+						{
+							params["_ct"];
+							_a = [];
+							{_a pushBack configName _x} forEach (configProperties[configFile >> "CfgVehicles" >> (typeOf _ct) >> "HitPoints"]);
+							waitUntil
+							{
+								sleep 0.2;
+								if (alive _ct) then {{if (_ct getHitPointDamage _x > 0) then {_ct setHitPointDamage [_x, 0]}} forEach _a};
+								!alive _ct OR speed _ct > 5 OR speed _ct < -5 OR ((getPos _ct)#2) > 2;
+							};
+						};
+
 						_a = [];
 						waitUntil {sleep 0.2;_a pushBack (speed _ct);if(count _a > 5)then{_a deleteAt 0}; !alive _ct};
 						if (alive _w) then
@@ -166,8 +206,8 @@ if (missionNameSpace getVariable ["pMdhFPVDroneRPG",99] == 99) then
 								,"
 									player distance _target < 5
 									&& {vehicle player == player}
-									&& {assignedItems player findIf {toLower""UavTerminal"" in toLower _x} != -1} 
-									&& {itemsWithMagazines _target findIf {_x == """+_m+"""} != -1 } 
+									&& {assignedItems player findIf {toLower""UavTerminal"" in toLower _x} != -1}
+									&& {itemsWithMagazines _target findIf {_x == """+_m+"""} != -1 }
 								"
 								,"true"
 								,{}
